@@ -74,7 +74,7 @@ def main():
     assert isinstance(result, str), "Long query handling failed"
     print("✓ Long query")
     
-    print("\nAll tests passed! 🎉")
+    print("\nAll tests passed!! 🎉")
 
 if __name__ == "__main__":
     main() 
