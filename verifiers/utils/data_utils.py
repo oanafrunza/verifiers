@@ -242,6 +242,10 @@ def preprocess_dataset(name: str = "gsm8k",
             split = "train"
         dataset: Dataset = load_dataset("PrimeIntellect/verifiable-coding-problems")[split] # type: ignore
         dataset = dataset.filter(lambda x: x['prompt'].startswith("Solve the following coding problem using the programming language python:")) # type: ignore
+    elif name == "flare-cfa":
+        if split is None:
+            split = "train"
+        dataset: Dataset = load_dataset("TheFinAI/flare-cfa")[split]
     else:
         raise ValueError(f"Dataset {name} not supported for preprocess_dataset. \
 Please ensure that the dataset is formatted with 'prompt' (str) and 'answer' (str) keys.")
