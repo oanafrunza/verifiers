@@ -178,7 +178,7 @@ def get_preprocess_fn(name: str) -> Callable[[Dict], Dict]:
             question = f"Question: {x["text"].replace("Q:","").replace(",CHOICES:", "\n\nChoices:\n")}\n"
             return {
                 "question": question,
-                "temp_answer": flare_map[answer],
+                "temp_answer": answer,
                 "task": "mc"
             }
         return preprocess_flare_cfa
