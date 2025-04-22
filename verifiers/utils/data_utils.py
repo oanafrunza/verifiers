@@ -257,7 +257,7 @@ def preprocess_dataset(name: str = "gsm8k",
     elif name == "flare-cfa":
         if split is None:
             split = "train"
-        dataset: Dataset = load_dataset("TheFinAI/flare-cfa")[split]
+        dataset: Dataset = load_dataset("TheFinAI/flare-cfa")["test"]
     else:
         raise ValueError(f"Dataset {name} not supported for preprocess_dataset. \
 Please ensure that the dataset is formatted with 'prompt' (str) and 'answer' (str) keys.")
