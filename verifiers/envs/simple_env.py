@@ -7,7 +7,7 @@ from datasets import Dataset
 
 from ..imports import LLM, SamplingParams  # type: ignore
 from verifiers.envs.environment import Environment
-
+from verifiers import RewardFunc
 
 class SimpleEnv(Environment):
     def __init__(self,
@@ -29,6 +29,12 @@ class SimpleEnv(Environment):
         pass
 
     def get_eval_dataset(self, **kwargs: Any) -> Dataset | None:
+        pass
+
+    def get_reward_funcs(self, **kwargs: Any) -> List[RewardFunc]:
+        pass
+
+    def get_reward_weights(self, **kwargs: Any) -> List[float]:
         pass
 
     def format_prompt(self, prompt: str, fewshot_prob: float = 1.0) -> List[Dict[str, str]]:
