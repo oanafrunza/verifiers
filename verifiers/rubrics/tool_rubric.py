@@ -114,12 +114,31 @@ class ToolRubric(Rubric):
         rewards = []
         for completion, ans, t in zip(completions, answer, task):
             if t == "mc":
+                response = str(self.get_last_answer(completion)) #[0]
+                if len(response.strip()) > 0 and isinstance(response, str): 
+                    response = response.strip()
+                reward = 1.0 if response == ans.strip() else 0.0
+            else:
+                reward = None
+            rewards.append(reward)
+        return rewards
+    
+    def mc_reward_func_robust(self, completions, answer, task, **kwargs) -> List[float | None]:
+        """Reward function that checks if the final answer matches the expected answer."""
+        rewards = []
+        for completion, ans, t in zip(completions, answer, task):
+            if t == "mc":
                 print(f"completion: {completion}")
                 print(f"ans: {ans}")
-                response = str(self.get_last_answer(completion)) #[0]
-                print(f"response: {response}")
-                if len(response.strip()) > 0 and isinstance(response, str) and response[0] in ['A', 'B', 'C']: #[OF] -- remove the last part
-                    response = response.strip()[0]
+                # raw code to get the first character from the answer.
+                for msg in reversed(completion):
+                    if msg['role'] == 'assistant':
+                        # if self.parser is None:
+                        #     raise ValueError("Parser is not set")
+                        response = msg['content'][0]
+                        print(f"response: {response}")
+                        if len(response.strip()) > 0 and isinstance(response, str): 
+                            response = response.strip()
                 reward = 1.0 if response == ans.strip() else 0.0
             else:
                 reward = None
