@@ -167,7 +167,7 @@ class ToolRubric(Rubric):
             reward = None
             if t == "mc":
                 try:
-                    reward = self.mc_reward_func([completion], [ans], [t], **kwargs)[0]
+                    reward = self.mc_reward_func_robust([completion], [ans], [t], **kwargs)[0]
                 except:
                     reward = None
             elif t == "math":
