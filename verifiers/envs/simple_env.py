@@ -31,6 +31,12 @@ class SimpleEnv(Environment):
     def get_eval_dataset(self, **kwargs: Any) -> Dataset | None:
         pass
 
+    def get_reward_weights(self, **kwargs: Any) -> List[float]:
+        pass
+
+    def get_reward_weights(self, **kwargs: Any) -> List[float]:
+        pass    
+
     def format_prompt(self, prompt: str, fewshot_prob: float = 1.0) -> List[Dict[str, str]]:
         messages = []
         if self.system_prompt:
