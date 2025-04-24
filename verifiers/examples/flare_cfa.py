@@ -45,20 +45,44 @@ Example for math problems:
 </answer>
 """
 
-dataset = preprocess_dataset("flare-cfa")
-vf_env = vf.ToolEnv(
-    eval_dataset=dataset,
-    system_prompt=TOOL_PROMPT,
-    few_shot=[],
-    tools=[python],
-    max_steps=1
-)
-print(vf_env.system_prompt)
+ZERO_SHOT_PROMPT = """
+You are a CFA (chartered financial analyst) taking a test to evaluate your
+knowledge of finance. You will be given a question along with three possible
+answers (A, B, and C).“nIndicate the correct answer (A, B, or C).
+"""
 
+dataset = preprocess_dataset("flare-cfa")
 print(dataset[0])
 
-# model_name = "Qwen/Qwen2.5-7B-Instruct"
-# base_url = "http://0.0.0.0:8001/v1"
-# client = OpenAI(base_url=base_url, api_key="EMPTY")
-# vf_env.eval_api(client, model_name, max_concurrent=20, sampling_args={"temperature": 0.0})
+
+vf_env = vf.MultiTurnEnv(
+    eval_dataset=dataset,
+    system_prompt=ZERO_SHOT_PROMPT,
+    few_shot=[],
+    #tools=[python],
+    max_steps=1
+)
+
+
+
+
+print(vf_env.system_prompt)
+
+# vf_env = vf.ToolEnv(
+#     eval_dataset=dataset,
+#     system_prompt=TOOL_PROMPT,
+#     few_shot=[],
+#     tools=[python],
+#     max_steps=1
+# )
+# print(vf_env.system_prompt)
+
+
+
+
+
+model_name = "Qwen/Qwen2.5-7B-Instruct"
+base_url = "http://10.0.1.195:8001/v1" 
+client = OpenAI(base_url=base_url, api_key="EMPTY")
+vf_env.eval_api(client, model_name, max_concurrent=20, sampling_args={"temperature": 0.0})
 
