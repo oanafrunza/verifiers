@@ -128,18 +128,18 @@ class ToolRubric(Rubric):
         rewards = []
         for completion, ans, t in zip(completions, answer, task):
             if t == "mc":
-                print(f"completion: {completion}")
+                print(f"\n\n=======completion: {completion}")
                 print(f"ans: {ans}")
                 # raw code to get the first character from the answer.
                 for msg in reversed(completion):
                     if msg['role'] == 'assistant':
                         # if self.parser is None:
                         #     raise ValueError("Parser is not set")
-                        response = msg['content'][0]
+                        response = msg['content']
                         print(f"response: {response}")
                         if len(response.strip()) > 0 and isinstance(response, str): 
                             response = response.strip()
-                reward = 1.0 if response == ans.strip() else 0.0
+                reward = 1.0 if f"{ans}:" in response else 0.0
             else:
                 reward = None
             rewards.append(reward)
