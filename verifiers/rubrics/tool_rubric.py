@@ -114,6 +114,8 @@ class ToolRubric(Rubric):
         rewards = []
         for completion, ans, t in zip(completions, answer, task):
             if t == "mc":
+                print(f"completion: {completion}")
+                print(f"ans: {ans}")
                 response = str(self.get_last_answer(completion)) #[0]
                 print(f"response: {response}")
                 if len(response.strip()) > 0 and isinstance(response, str) and response[0] in ['A', 'B', 'C']: #[OF] -- remove the last part
