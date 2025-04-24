@@ -376,7 +376,6 @@ class MultiTurnEnv(Environment):
                     total=len(eval_dataset),
                     desc=f"Evaluating {len(eval_dataset)} examples"
                 )
-                print("=======", results)
                 return results
             
             # Run the async evaluation
