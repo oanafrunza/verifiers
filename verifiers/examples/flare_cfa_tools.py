@@ -1,9 +1,16 @@
 from openai import OpenAI
 
+import os
+import sys
+sys.path.append(os.path.abspath("/mnt/data/oanaf/verifiers"))
+
+
 import verifiers as vf
 from verifiers.tools import python
 from verifiers.tools import search
 from verifiers.utils import preprocess_dataset
+from verifiers.prompts import SEARCH_FEW_SHOT
+
 
 """
 Evaluating multi-turn reasoning before/after training.
@@ -26,21 +33,12 @@ Tools can be called by writing a JSON command inside <tool> tags with:
 - "name": the name of the tool to use
 - "args": the arguments for the tool
 
-Example usage:
-<tool>
-{{"name": "python", "args": {{"code": "import sympy\nx = sympy.symbols('x')\nprint(sympy.solve(x**2 - 4, x))"}}}}
-</tool>
-
 You will then see the tool's output inside <result> tags. You may call tools multiple times if needed.
 
 The <answer>...</answer> tags should contain only your final answer.
 
-Example for multiple choice questions:
-<answer>
-A
-</answer>
-
 """
+
 
 ZERO_SHOT_PROMPT = """
 You are a CFA (chartered financial analyst) taking a test to evaluate your
@@ -62,11 +60,11 @@ print(dataset[0])
 # print(vf_env.system_prompt)
 
 vf_env = vf.ToolEnv(
-    eval_dataset=dataset,
+    eval_dataset=dataset, #.select(range(5)),
     system_prompt=f"{ZERO_SHOT_PROMPT}\n\n{TOOL_PROMPT}",
-    few_shot=[],
-    tools=[python],
-    max_steps=1
+    few_shot=[],  #SEARCH_FEW_SHOT, #[]
+    tools=[search],
+    max_steps=2
 )
 print(vf_env.system_prompt)
 
@@ -75,7 +73,7 @@ print(vf_env.system_prompt)
 
 
 model_name = "Qwen/Qwen2.5-7B-Instruct"
-base_url = "http://0.0.0.0:8001/v1"
+base_url = "http://10.0.6.217:8001/v1"
 client = OpenAI(base_url=base_url, api_key="EMPTY")
 vf_env.eval_api(client, model_name, max_concurrent=20, sampling_args={"temperature": 0.0})
 
